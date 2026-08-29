@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LKK PARTY | Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, "Noto Sans Devanagari", sans-serif;
+
+            background:
+                radial-gradient(circle at center, #300000 0%, #0b0b0b 45%, #050505 100%);
+
+            color: white;
+        }
+
+        .login-box {
+            width: 90%;
+            max-width: 420px;
+
+            padding: 40px;
+
+            background: #111;
+
+            border: 1px solid #333;
+            border-top: 4px solid #e50914;
+
+            border-radius: 12px;
+
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .logo {
+            text-align: center;
+
+            font-size: 32px;
+            font-weight: 900;
+
+            letter-spacing: 4px;
+
+            margin-bottom: 8px;
+        }
+
+        .logo span {
+            color: #e50914;
+        }
+
+        .subtitle {
+            text-align: center;
+
+            color: #888;
+
+            margin-bottom: 35px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ccc;
+
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 14px;
+
+            margin-bottom: 20px;
+
+            background: #080808;
+
+            border: 1px solid #333;
+
+            border-radius: 6px;
+
+            color: white;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #e50914;
+        }
+
+        .login-btn {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: #e50914;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #ff202a;
+            transform: translateY(-2px);
+        }
+
+        .back {
+            display: block;
+
+            margin-top: 22px;
+
+            text-align: center;
+
+            color: #888;
+
+            text-decoration: none;
+
+            font-size: 14px;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        #message {
+            text-align: center;
+
+            margin-top: 18px;
+
+            font-size: 14px;
+
+            min-height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="logo">
+            <span>LKK</span> PARTY
+        </div>
+
+        <p class="subtitle">सदस्य लॉगिन</p>
+
+        <form id="loginForm">
+
+            <label for="loginId">
+                Login ID / Number
+            </label>
+
+            <input
+                type="text"
+                id="loginId"
+                placeholder="अपना Login ID डालें"
+                required
+            >
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="अपना Password डालें"
+                required
+            >
+
+            <button type="submit" class="login-btn">
+                LOGIN
+            </button>
+
+        </form>
+
+        <p id="message"></p>
+
+        <a href="index.html" class="back">
+            ← मुख्य पृष्ठ पर वापस जाएँ
+        </a>
+
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    import {
+        getAuth,
+        signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDJpoidkKYkz0sNYWUmfNxUUdMkGlwEuDg",
+        authDomain: "lkk-party.firebaseapp.com",
+        projectId: "lkk-party",
+        storageBucket: "lkk-party.firebasestorage.app",
+        messagingSenderId: "379113199782",
+        appId: "1:379113199782:web:4e01e88865687d9f20fc67",
+        measurementId: "G-1NJXH7LXRX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const loginId = document.getElementById("loginId").value.trim();
+        const password = document.getElementById("password").value;
+        const message = document.getElementById("message");
+
+        message.textContent = "Login हो रहा है...";
+
+        try {
+            await signInWithEmailAndPassword(auth, loginId, password);
+
+            message.textContent = "Login सफल हुआ!";
+
+            // फिलहाल वापस मुख्य पृष्ठ पर
+            setTimeout(() => {
+               window.location.href = "dashboard.html";
+            }, 800);
+
+        } catch (error) {
+            message.textContent = "Login ID या Password गलत है।";
+            console.error(error);
+        }
+    });
+</script>
+
+</body>
+</html>

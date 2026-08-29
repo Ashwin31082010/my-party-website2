@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LKK PARTY | Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Noto Sans Devanagari", sans-serif;
+            background: #080808;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        header {
+            height: 70px;
+            background: #0d0d0d;
+            border-bottom: 1px solid #2a2a2a;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: #e50914;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-name {
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .logout {
+            border: 1px solid #e50914;
+            background: transparent;
+            color: white;
+
+            padding: 9px 16px;
+            border-radius: 5px;
+
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .logout:hover {
+            background: #e50914;
+        }
+
+
+        /* MAIN */
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 25px;
+        }
+
+        .welcome {
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .welcome h1 span {
+            color: #e50914;
+        }
+
+        .welcome p {
+            color: #888;
+        }
+
+
+        /* GRID */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 10px;
+            padding: 25px;
+
+            min-height: 210px;
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: #e50914;
+            transform: translateY(-3px);
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #888;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .card-button {
+            display: inline-block;
+
+            margin-top: 20px;
+            padding: 10px 16px;
+
+            background: #e50914;
+            color: white;
+
+            border: none;
+            border-radius: 5px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .card-button:hover {
+            background: #ff202a;
+        }
+
+
+        /* NOTICE COUNT */
+
+        #noticeCount {
+            display: none;
+
+            background: #e50914;
+            color: white;
+
+            min-width: 24px;
+            height: 24px;
+
+            padding: 3px 7px;
+
+            margin-left: 6px;
+
+            border-radius: 50px;
+
+            font-size: 13px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+
+        /* ADMIN PANEL */
+
+        .admin-panel {
+            margin-top: 30px;
+
+            background: #120808;
+
+            border: 1px solid #4b1111;
+
+            border-radius: 10px;
+
+            padding: 25px;
+        }
+
+        .admin-panel h2 {
+            color: #e50914;
+            margin-bottom: 8px;
+        }
+
+        .admin-panel p {
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .admin-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .admin-btn {
+            padding: 11px 17px;
+
+            background: #e50914;
+            color: white;
+
+            border: none;
+            border-radius: 5px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-btn:hover {
+            background: #ff202a;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+
+            padding: 30px 15px;
+
+            color: #666;
+
+            border-top: 1px solid #222;
+
+            margin-top: 50px;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 0 15px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            main {
+                padding: 30px 15px;
+            }
+
+            .welcome h1 {
+                font-size: 27px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                min-height: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="logo">
+            <span>LKK</span> PARTY
+        </div>
+
+
+        <div class="user-area">
+
+            <div class="user-name">
+                स्वागत है, सदस्य
+            </div>
+
+            <button class="logout" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MAIN -->
+
+    <main>
+
+
+        <div class="welcome">
+
+            <h1>
+                LKK PARTY <span>Dashboard</span>
+            </h1>
+
+            <p>
+                पार्टी से संबंधित नवीनतम सूचना, घोषणा और दस्तावेज यहाँ देखें।
+            </p>
+
+        </div>
+
+
+
+        <!-- DASHBOARD CARDS -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- NOTICE -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📢
+                </div>
+
+
+                <h2>
+
+                    सूचना / Notice
+
+                    <span id="noticeCount">
+                        0
+                    </span>
+
+                </h2>
+
+
+                <p>
+                    पार्टी द्वारा जारी की गई महत्वपूर्ण सूचनाएँ यहाँ दिखाई देंगी।
+                </p>
+
+
+                <button class="card-button">
+                    सूचनाएँ देखें
+                </button>
+
+            </div>
+
+
+
+            <!-- ANNOUNCEMENT -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📣
+                </div>
+
+
+                <h2>
+                    घोषणाएँ
+                </h2>
+
+
+                <p>
+                    पार्टी की नवीनतम घोषणाएँ और महत्वपूर्ण संदेश यहाँ उपलब्ध होंगे।
+                </p>
+
+
+                <button class="card-button">
+                    घोषणाएँ देखें
+                </button>
+
+            </div>
+
+
+
+            <!-- YOJANA -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📜
+                </div>
+
+
+                <h2>
+                    योजना घोषणाएँ
+                </h2>
+
+
+                <p>
+                    पार्टी द्वारा बनाई गई योजनाओं और उनके विवरण यहाँ देखे जा सकेंगे।
+                </p>
+
+
+                <button class="card-button">
+                    योजनाएँ देखें
+                </button>
+
+            </div>
+
+
+
+            <!-- DOCUMENT -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📄
+                </div>
+
+
+                <h2>
+                    दस्तावेज
+                </h2>
+
+
+                <p>
+                    पार्टी से संबंधित आवश्यक दस्तावेज यहाँ उपलब्ध होंगे।
+                </p>
+
+
+                <button class="card-button">
+                    दस्तावेज देखें
+                </button>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ADMIN PANEL -->
+
+        <div class="admin-panel">
+
+            <h2>
+                👑 Admin Panel
+            </h2>
+
+
+            <p>
+                केवल अधिकृत Admin के लिए।
+            </p>
+
+
+            <div class="admin-buttons">
+
+
+                <button class="admin-btn">
+                    + नई सूचना
+                </button>
+
+
+                <button class="admin-btn">
+                    + नई घोषणा
+                </button>
+
+
+                <button class="admin-btn">
+                    + योजना जोड़ें
+                </button>
+
+
+                <button class="admin-btn">
+                    + दस्तावेज Upload
+                </button>
+
+
+                <button class="admin-btn">
+                    📸 Photo Upload
+                </button>
+
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        © 2026 LKK PARTY — सभी अधिकार सुरक्षित
+
+    </footer>
+
+
+
+    <!-- FIREBASE -->
+
+    <script type="module">
+
+
+        /* Firebase App */
+
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+        /* Firebase Authentication */
+
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+        /* Firestore */
+
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            collection,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+        /* Firebase Configuration */
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyDJpoidkKYkz0sNYWUmfNxUUdMkGlwEuDg",
+
+            authDomain: "lkk-party.firebaseapp.com",
+
+            projectId: "lkk-party",
+
+            storageBucket: "lkk-party.firebasestorage.app",
+
+            messagingSenderId: "379113199782",
+
+            appId: "1:379113199782:web:4e01e88865687d9f20fc67",
+
+            measurementId: "G-1NJXH7LXRX"
+
+        };
+
+
+
+        /* Start Firebase */
+
+        const app = initializeApp(firebaseConfig);
+
+        const auth = getAuth(app);
+
+        const db = getFirestore(app);
+
+
+
+        /* Admin Panel */
+
+        const adminPanel =
+            document.querySelector(".admin-panel");
+
+
+        adminPanel.style.display = "none";
+
+
+
+        /* Login Check */
+
+        onAuthStateChanged(auth, async (user) => {
+
+
+            /* Login नहीं है */
+
+            if (!user) {
+
+                window.location.href = "login.html";
+
+                return;
+
+            }
+
+
+
+            console.log(
+                "Logged in:",
+                user.email
+            );
+
+
+
+            /* Admin Check */
+
+            try {
+
+
+                const adminRef =
+                    doc(
+                        db,
+                        "admins",
+                        user.uid
+                    );
+
+
+                const adminSnap =
+                    await getDoc(adminRef);
+
+
+
+                if (
+                    adminSnap.exists() &&
+                    adminSnap.data().role === "admin"
+                ) {
+
+
+                    /* Admin */
+
+                    adminPanel.style.display =
+                        "block";
+
+
+                    document.querySelector(
+                        ".user-name"
+                    ).textContent =
+                        "स्वागत है, Admin 👑";
+
+
+                } else {
+
+
+                    /* Member */
+
+                    adminPanel.style.display =
+                        "none";
+
+
+                    document.querySelector(
+                        ".user-name"
+                    ).textContent =
+                        "स्वागत है, सदस्य";
+
+                }
+
+
+
+                /* Notice Count */
+
+                await loadNoticeCount();
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Admin check error:",
+                    error
+                );
+
+
+                adminPanel.style.display =
+                    "none";
+
+            }
+
+        });
+
+
+
+        /* Notice Count Function */
+
+        async function loadNoticeCount() {
+
+
+            try {
+
+
+                const noticesRef =
+                    collection(
+                        db,
+                        "notices"
+                    );
+
+
+                const snapshot =
+                    await getDocs(
+                        noticesRef
+                    );
+
+
+                const noticeCount =
+                    document.getElementById(
+                        "noticeCount"
+                    );
+
+
+
+                if (snapshot.size > 0) {
+
+
+                    noticeCount.textContent =
+                        snapshot.size;
+
+
+                    noticeCount.style.display =
+                        "inline-block";
+
+
+                } else {
+
+
+                    noticeCount.style.display =
+                        "none";
+
+                }
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Notice count error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+
+        /* Logout */
+
+        window.logout = async function () {
+
+
+            try {
+
+
+                await signOut(auth);
+
+
+                window.location.href =
+                    "index.html";
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+            }
+
+        };
+
+
+    </script>
+
+
+</body>
+
+</html>
