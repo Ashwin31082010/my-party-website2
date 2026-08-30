@@ -903,6 +903,85 @@ addAnnouncementBox.style.display = "none";
             }
 
         }
+        /* SHOW YOJANA */
+
+window.showYojana = async function () {
+
+    dashboardGrid.style.display = "none";
+    adminPanel.style.display = "none";
+
+    yojanaSection.style.display = "block";
+
+    yojanaSection.scrollIntoView({
+        behavior: "smooth"
+    });
+
+    const yojanaList =
+        document.getElementById("yojanaList");
+
+    yojanaList.innerHTML =
+        "योजनाएँ लोड हो रही हैं...";
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(db, "yojana")
+            );
+
+        if (snapshot.empty) {
+
+            yojanaList.innerHTML =
+                "<p style='color:#888;'>अभी कोई योजना उपलब्ध नहीं है।</p>";
+
+            return;
+        }
+
+        yojanaList.innerHTML = "";
+
+        snapshot.forEach((yojanaDoc) => {
+
+            const data =
+                yojanaDoc.data();
+
+            const title =
+                data.title ||
+                "बिना शीर्षक की योजना";
+
+            const message =
+                data.message ||
+                "कोई विवरण उपलब्ध नहीं है।";
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "notice-item";
+
+            item.innerHTML = `
+                <h3>📜 ${escapeHTML(title)}</h3>
+                <p>${escapeHTML(message)}</p>
+            `;
+
+            yojanaList.appendChild(item);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Yojana loading error:",
+            error
+        );
+
+        yojanaList.innerHTML =
+            `<p style="color:#e50914;">
+                ❌ योजनाएँ लोड नहीं हो सकीं।<br>
+                ${error.message}
+            </p>`;
+    }
+
+};
                 /* SHOW ANNOUNCEMENTS */
 
         window.showAnnouncements = async function () {
