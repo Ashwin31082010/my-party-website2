@@ -562,10 +562,13 @@
     type="file"
     id="photoInput"
     accept="image/*"
-    style="display:none;"
+    hidden
 >
 
-<button class="admin-btn" onclick="document.getElementById('photoInput').click()">
+<button
+    type="button"
+    class="admin-btn"
+    id="photoUploadButton">
     📸 Photo Upload
 </button>
 
@@ -1729,6 +1732,27 @@ window.publishAnnouncement = async function () {
     }
 
 };
+        /* PHOTO FILE SELECTION */
+
+const photoInput = document.getElementById("photoInput");
+const photoUploadButton = document.getElementById("photoUploadButton");
+
+photoUploadButton.addEventListener("click", () => {
+    photoInput.click();
+});
+
+photoInput.addEventListener("change", () => {
+
+    if (photoInput.files.length > 0) {
+
+        const selectedFile = photoInput.files[0];
+
+        console.log("Selected photo:", selectedFile.name);
+
+        alert("✅ Photo select ho gayi:\n" + selectedFile.name);
+    }
+
+});
 
 
         /* HTML SAFE */
