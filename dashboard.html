@@ -923,6 +923,101 @@ addAnnouncementBox.style.display = "none";
             }
 
         }
+        /* SHOW DOCUMENTS */
+
+window.showDocuments = async function () {
+
+    dashboardGrid.style.display = "none";
+    adminPanel.style.display = "none";
+    noticeSection.style.display = "none";
+    yojanaSection.style.display = "none";
+    addNoticeBox.style.display = "none";
+    addAnnouncementBox.style.display = "none";
+
+    documentSection.style.display = "block";
+
+    documentSection.scrollIntoView({
+        behavior: "smooth"
+    });
+
+    const documentList =
+        document.getElementById("documentList");
+
+    documentList.innerHTML =
+        "दस्तावेज़ लोड हो रहे हैं...";
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(db, "documents")
+            );
+
+        if (snapshot.empty) {
+
+            documentList.innerHTML =
+                "<p style='color:#888;'>अभी कोई दस्तावेज़ उपलब्ध नहीं है।</p>";
+
+            return;
+        }
+
+        documentList.innerHTML = "";
+
+        snapshot.forEach((documentDoc) => {
+
+            const data =
+                documentDoc.data();
+
+            const title =
+                data.title ||
+                "दस्तावेज़";
+
+            const imageUrl =
+                data.imageUrl;
+
+            if (!imageUrl) return;
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "notice-item";
+
+            item.innerHTML = `
+                <h3>📄 ${escapeHTML(title)}</h3>
+
+                <img
+                    src="${escapeHTML(imageUrl)}"
+                    alt="${escapeHTML(title)}"
+                    style="
+                        width:100%;
+                        max-width:700px;
+                        border-radius:8px;
+                        margin-top:10px;
+                        display:block;
+                    "
+                >
+            `;
+
+            documentList.appendChild(item);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Document loading error:",
+            error
+        );
+
+        documentList.innerHTML =
+            `<p style="color:#e50914;">
+                ❌ दस्तावेज़ लोड नहीं हो सके।<br>
+                ${error.message}
+            </p>`;
+    }
+
+};
 /* SHOW YOJANA */
 
 window.showYojana = async function () {
