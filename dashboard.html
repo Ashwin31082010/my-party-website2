@@ -579,6 +579,75 @@
                 रद्द करें
             </button>
 
+             </div>
+
+        <!-- ADD ANNOUNCEMENT BOX -->
+
+        <div id="addAnnouncementBox" class="notice-section" style="display:none;">
+
+            <h2>
+                📣 नई घोषणा जोड़ें
+            </h2>
+
+            <select
+                id="announcementType"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-bottom:12px;
+                    background:#080808;
+                    color:white;
+                    border:1px solid #292929;
+                    border-radius:5px;
+                "
+            >
+                <option value="">घोषणा का प्रकार चुनें</option>
+                <option value="नियुक्ति">➕ नियुक्ति</option>
+                <option value="पद से हटाना">➖ पद से हटाना</option>
+                <option value="पद परिवर्तन">🔄 पद परिवर्तन</option>
+                <option value="अन्य">📢 अन्य महत्वपूर्ण घोषणा</option>
+            </select>
+
+            <input
+                id="announcementTitle"
+                type="text"
+                placeholder="घोषणा का शीर्षक"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-bottom:12px;
+                    background:#080808;
+                    color:white;
+                    border:1px solid #292929;
+                    border-radius:5px;
+                "
+            >
+
+            <textarea
+                id="announcementMessage"
+                placeholder="घोषणा का विवरण लिखें..."
+                style="
+                    width:100%;
+                    height:140px;
+                    padding:14px;
+                    background:#080808;
+                    color:white;
+                    border:1px solid #292929;
+                    border-radius:5px;
+                    resize:vertical;
+                "
+            ></textarea>
+
+            <br><br>
+
+            <button class="admin-btn" onclick="publishAnnouncement()">
+                घोषणा प्रकाशित करें
+            </button>
+
+            <button class="back-button" onclick="hideAddAnnouncement()">
+                रद्द करें
+            </button>
+
         </div>
 
     </main>
