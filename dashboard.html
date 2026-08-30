@@ -903,12 +903,15 @@ addAnnouncementBox.style.display = "none";
             }
 
         }
-        /* SHOW YOJANA */
+/* SHOW YOJANA */
 
 window.showYojana = async function () {
 
     dashboardGrid.style.display = "none";
     adminPanel.style.display = "none";
+    noticeSection.style.display = "none";
+    addNoticeBox.style.display = "none";
+    addAnnouncementBox.style.display = "none";
 
     yojanaSection.style.display = "block";
 
@@ -941,22 +944,18 @@ window.showYojana = async function () {
 
         snapshot.forEach((yojanaDoc) => {
 
-            const data =
-                yojanaDoc.data();
+            const data = yojanaDoc.data();
 
             const title =
-                data.title ||
-                "बिना शीर्षक की योजना";
+                data.title || "बिना शीर्षक की योजना";
 
             const message =
-                data.message ||
-                "कोई विवरण उपलब्ध नहीं है।";
+                data.message || "कोई विवरण उपलब्ध नहीं है।";
 
             const item =
                 document.createElement("div");
 
-            item.className =
-                "notice-item";
+            item.className = "notice-item";
 
             item.innerHTML = `
                 <h3>📜 ${escapeHTML(title)}</h3>
@@ -980,13 +979,18 @@ window.showYojana = async function () {
                 ${error.message}
             </p>`;
     }
-
 };
-        /* HIDE YOJANA */
+      /* HIDE YOJANA */
 
 window.hideYojana = function () {
 
     yojanaSection.style.display = "none";
+
+    noticeSection.style.display = "none";
+
+    addNoticeBox.style.display = "none";
+
+    addAnnouncementBox.style.display = "none";
 
     dashboardGrid.style.display = "grid";
 
@@ -995,16 +999,15 @@ window.hideYojana = function () {
             .textContent
             .includes("Admin")
     ) {
-
         adminPanel.style.display = "block";
-
+    } else {
+        adminPanel.style.display = "none";
     }
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
-
 };
                 /* SHOW ANNOUNCEMENTS */
 
