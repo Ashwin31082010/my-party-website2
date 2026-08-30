@@ -558,9 +558,16 @@
                     + दस्तावेज Upload
                 </button>
 
-                <button class="admin-btn">
-                    📸 Photo Upload
-                </button>
+                <input
+    type="file"
+    id="photoInput"
+    accept="image/*"
+    style="display:none;"
+>
+
+<button class="admin-btn" onclick="document.getElementById('photoInput').click()">
+    📸 Photo Upload
+</button>
 
             </div>
 
