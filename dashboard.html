@@ -1092,6 +1092,76 @@ window.hideDocuments = function () {
     });
 
 };
+        /* ADD YOJANA */
+
+window.showAddYojana = function () {
+
+    addYojanaBox.style.display = "block";
+
+    addYojanaBox.scrollIntoView({
+        behavior: "smooth"
+    });
+
+};
+
+window.hideAddYojana = function () {
+
+    addYojanaBox.style.display = "none";
+
+};
+
+
+/* PUBLISH YOJANA */
+
+window.publishYojana = async function () {
+
+    const title =
+        document.getElementById("yojanaTitle").value.trim();
+
+    const message =
+        document.getElementById("yojanaMessage").value.trim();
+
+    if (!title || !message) {
+
+        alert("कृपया योजना का Title और विवरण दोनों भरें।");
+
+        return;
+    }
+
+    try {
+
+        await addDoc(
+            collection(db, "yojana"),
+            {
+                title: title,
+                message: message,
+                createdAt: serverTimestamp(),
+                createdBy: auth.currentUser.uid
+            }
+        );
+
+        alert("✅ योजना सफलतापूर्वक प्रकाशित हो गई!");
+
+        document.getElementById("yojanaTitle").value = "";
+        document.getElementById("yojanaMessage").value = "";
+
+        addYojanaBox.style.display = "none";
+
+    } catch (error) {
+
+        console.error(
+            "Publish yojana error:",
+            error
+        );
+
+        alert(
+            "❌ योजना प्रकाशित नहीं हो सकी!\n\n" +
+            error.message
+        );
+
+    }
+
+};
 /* SHOW YOJANA */
 
 window.showYojana = async function () {
