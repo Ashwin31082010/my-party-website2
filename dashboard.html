@@ -554,9 +554,23 @@
                     + योजना जोड़ें
                 </button>
 
-                <button class="admin-btn">
-                    + दस्तावेज Upload
-                </button>
+               <input
+    type="file"
+    id="documentInput"
+    accept="image/*,.pdf"
+    hidden
+>
+
+<button
+    type="button"
+    class="admin-btn"
+    id="documentUploadButton">
+    📄 दस्तावेज Upload
+</button>
+
+<span id="documentFileName" style="color:#888; margin-left:10px;">
+    कोई दस्तावेज़ चयनित नहीं
+</span>
 
 
 
