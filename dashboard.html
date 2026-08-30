@@ -696,6 +696,11 @@
 
                 await loadNoticeCount();
 
+addNoticeBox.style.display =
+    "none";
+
+await showNotices();
+
             } catch (error) {
 
                 console.error(
