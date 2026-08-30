@@ -8,7 +8,6 @@
     <title>LKK PARTY | Dashboard</title>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -21,8 +20,6 @@
             color: white;
             min-height: 100vh;
         }
-
-        /* HEADER */
 
         header {
             height: 70px;
@@ -77,9 +74,6 @@
             background: #e50914;
         }
 
-
-        /* MAIN */
-
         main {
             max-width: 1200px;
             margin: auto;
@@ -102,9 +96,6 @@
         .welcome p {
             color: #888;
         }
-
-
-        /* GRID */
 
         .dashboard-grid {
             display: grid;
@@ -145,8 +136,6 @@
         }
 
         .card-button {
-            display: inline-block;
-
             margin-top: 20px;
             padding: 10px 16px;
 
@@ -163,7 +152,6 @@
         .card-button:hover {
             background: #ff202a;
         }
-
 
         /* NOTICE COUNT */
 
@@ -187,10 +175,11 @@
             vertical-align: middle;
         }
 
-
         /* ADMIN PANEL */
 
         .admin-panel {
+            display: none;
+
             margin-top: 30px;
 
             background: #120808;
@@ -235,9 +224,6 @@
             background: #ff202a;
         }
 
-
-        /* FOOTER */
-
         footer {
             text-align: center;
 
@@ -249,9 +235,6 @@
 
             margin-top: 50px;
         }
-
-
-        /* MOBILE */
 
         @media (max-width: 700px) {
 
@@ -282,16 +265,12 @@
             .card {
                 min-height: auto;
             }
-
         }
-
     </style>
 
 </head>
 
-
 <body>
-
 
     <!-- HEADER -->
 
@@ -301,11 +280,10 @@
             <span>LKK</span> PARTY
         </div>
 
-
         <div class="user-area">
 
-            <div class="user-name">
-                स्वागत है, सदस्य
+            <div class="user-name" id="userName">
+                जाँच हो रही है...
             </div>
 
             <button class="logout" onclick="logout()">
@@ -317,11 +295,9 @@
     </header>
 
 
-
     <!-- MAIN -->
 
     <main>
-
 
         <div class="welcome">
 
@@ -334,7 +310,6 @@
             </p>
 
         </div>
-
 
 
         <!-- DASHBOARD CARDS -->
@@ -350,29 +325,20 @@
                     📢
                 </div>
 
-
                 <h2>
-
                     सूचना / Notice
-
-                    <span id="noticeCount">
-                        0
-                    </span>
-
+                    <span id="noticeCount">0</span>
                 </h2>
-
 
                 <p>
                     पार्टी द्वारा जारी की गई महत्वपूर्ण सूचनाएँ यहाँ दिखाई देंगी।
                 </p>
-
 
                 <button class="card-button">
                     सूचनाएँ देखें
                 </button>
 
             </div>
-
 
 
             <!-- ANNOUNCEMENT -->
@@ -383,23 +349,19 @@
                     📣
                 </div>
 
-
                 <h2>
                     घोषणाएँ
                 </h2>
 
-
                 <p>
                     पार्टी की नवीनतम घोषणाएँ और महत्वपूर्ण संदेश यहाँ उपलब्ध होंगे।
                 </p>
-
 
                 <button class="card-button">
                     घोषणाएँ देखें
                 </button>
 
             </div>
-
 
 
             <!-- YOJANA -->
@@ -410,23 +372,19 @@
                     📜
                 </div>
 
-
                 <h2>
                     योजना घोषणाएँ
                 </h2>
 
-
                 <p>
                     पार्टी द्वारा बनाई गई योजनाओं और उनके विवरण यहाँ देखे जा सकेंगे।
                 </p>
-
 
                 <button class="card-button">
                     योजनाएँ देखें
                 </button>
 
             </div>
-
 
 
             <!-- DOCUMENT -->
@@ -437,16 +395,13 @@
                     📄
                 </div>
 
-
                 <h2>
                     दस्तावेज
                 </h2>
 
-
                 <p>
                     पार्टी से संबंधित आवश्यक दस्तावेज यहाँ उपलब्ध होंगे।
                 </p>
-
 
                 <button class="card-button">
                     दस्तावेज देखें
@@ -454,60 +409,48 @@
 
             </div>
 
-
         </div>
-
 
 
         <!-- ADMIN PANEL -->
 
-        <div class="admin-panel">
+        <div class="admin-panel" id="adminPanel">
 
             <h2>
                 👑 Admin Panel
             </h2>
 
-
             <p>
                 केवल अधिकृत Admin के लिए।
             </p>
 
-
             <div class="admin-buttons">
-
 
                 <button class="admin-btn">
                     + नई सूचना
                 </button>
 
-
                 <button class="admin-btn">
                     + नई घोषणा
                 </button>
-
 
                 <button class="admin-btn">
                     + योजना जोड़ें
                 </button>
 
-
                 <button class="admin-btn">
                     + दस्तावेज Upload
                 </button>
-
 
                 <button class="admin-btn">
                     📸 Photo Upload
                 </button>
 
-
             </div>
 
         </div>
 
-
     </main>
-
 
 
     <!-- FOOTER -->
@@ -519,11 +462,9 @@
     </footer>
 
 
-
     <!-- FIREBASE -->
 
     <script type="module">
-
 
         /* Firebase App */
 
@@ -552,7 +493,6 @@
         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-
         /* Firebase Configuration */
 
         const firebaseConfig = {
@@ -574,7 +514,6 @@
         };
 
 
-
         /* Start Firebase */
 
         const app = initializeApp(firebaseConfig);
@@ -584,21 +523,18 @@
         const db = getFirestore(app);
 
 
-
-        /* Admin Panel */
+        /* Elements */
 
         const adminPanel =
-            document.querySelector(".admin-panel");
+            document.getElementById("adminPanel");
 
-
-        adminPanel.style.display = "none";
-
+        const userName =
+            document.getElementById("userName");
 
 
         /* Login Check */
 
         onAuthStateChanged(auth, async (user) => {
-
 
             /* Login नहीं है */
 
@@ -607,26 +543,26 @@
                 window.location.href = "login.html";
 
                 return;
-
             }
 
 
+            console.log("Logged in:", user.email);
 
-            console.log(
-                "Logged in:",
-                user.email
-            );
-console.log("MY UID:", user.uid);
+            console.log("User UID:", user.uid);
 
-const adminRef = doc(db, "admins", user.uid);
-console.log("ADMIN DOCUMENT ID:", user.uid);
 
+            /* Default Member */
+
+            userName.textContent =
+                "स्वागत है, सदस्य";
+
+            adminPanel.style.display =
+                "none";
 
 
             /* Admin Check */
 
             try {
-
 
                 const adminRef =
                     doc(
@@ -640,56 +576,47 @@ console.log("ADMIN DOCUMENT ID:", user.uid);
                     await getDoc(adminRef);
 
 
+                console.log(
+                    "Admin document exists:",
+                    adminSnap.exists()
+                );
+
 
                 if (
                     adminSnap.exists() &&
                     adminSnap.data().role === "admin"
                 ) {
 
-
-                    /* Admin */
+                    console.log("ADMIN LOGIN SUCCESS");
 
                     adminPanel.style.display =
                         "block";
 
-
-                    document.querySelector(
-                        ".user-name"
-                    ).textContent =
+                    userName.textContent =
                         "स्वागत है, Admin 👑";
-
 
                 } else {
 
-
-                    /* Member */
+                    console.log("NORMAL MEMBER");
 
                     adminPanel.style.display =
                         "none";
 
-
-                    document.querySelector(
-                        ".user-name"
-                    ).textContent =
-                        "स्वागत है, सदस्य";
-
                 }
 
 
-
-                /* Notice Count */
+                /* Load Notice Count */
 
                 await loadNoticeCount();
 
+            }
 
-            } catch (error) {
-
+            catch (error) {
 
                 console.error(
                     "Admin check error:",
                     error
                 );
-
 
                 adminPanel.style.display =
                     "none";
@@ -699,14 +626,11 @@ console.log("ADMIN DOCUMENT ID:", user.uid);
         });
 
 
-
-        /* Notice Count Function */
+        /* Notice Count */
 
         async function loadNoticeCount() {
 
-
             try {
-
 
                 const noticesRef =
                     collection(
@@ -727,29 +651,24 @@ console.log("ADMIN DOCUMENT ID:", user.uid);
                     );
 
 
-
                 if (snapshot.size > 0) {
-
 
                     noticeCount.textContent =
                         snapshot.size;
 
-
                     noticeCount.style.display =
                         "inline-block";
 
-
                 } else {
-
 
                     noticeCount.style.display =
                         "none";
 
                 }
 
+            }
 
-            } catch (error) {
-
+            catch (error) {
 
                 console.error(
                     "Notice count error:",
@@ -761,24 +680,20 @@ console.log("ADMIN DOCUMENT ID:", user.uid);
         }
 
 
-
         /* Logout */
 
         window.logout = async function () {
 
-
             try {
 
-
                 await signOut(auth);
-
 
                 window.location.href =
                     "index.html";
 
+            }
 
-            } catch (error) {
-
+            catch (error) {
 
                 console.error(
                     "Logout error:",
@@ -789,9 +704,7 @@ console.log("ADMIN DOCUMENT ID:", user.uid);
 
         };
 
-
     </script>
-
 
 </body>
 
