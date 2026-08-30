@@ -1050,6 +1050,23 @@ await showNotices();
             });
 
         };
+        /* ADD ANNOUNCEMENT BOX */
+
+window.showAddAnnouncement = function () {
+
+    addAnnouncementBox.style.display = "block";
+
+    addAnnouncementBox.scrollIntoView({
+        behavior: "smooth"
+    });
+
+};
+
+window.hideAddAnnouncement = function () {
+
+    addAnnouncementBox.style.display = "none";
+
+};
 
 
         window.hideAddNotice = function () {
