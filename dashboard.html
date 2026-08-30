@@ -886,6 +886,120 @@ await showNotices();
             }
 
         }
+                /* SHOW ANNOUNCEMENTS */
+
+        window.showAnnouncements = async function () {
+
+            dashboardGrid.style.display = "none";
+            adminPanel.style.display = "none";
+            noticeSection.style.display = "block";
+
+            noticeSection.scrollIntoView({
+                behavior: "smooth"
+            });
+
+            const noticeList =
+                document.getElementById("noticeList");
+
+            noticeList.innerHTML =
+                "घोषणाएँ लोड हो रही हैं...";
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(db, "announcements")
+                    );
+
+                if (snapshot.empty) {
+
+                    noticeList.innerHTML =
+                        "<p style='color:#888;'>अभी कोई घोषणा उपलब्ध नहीं है।</p>";
+
+                    return;
+                }
+
+                noticeList.innerHTML = "";
+
+                snapshot.forEach((announcementDoc) => {
+
+                    const data =
+                        announcementDoc.data();
+
+                    const type =
+                        data.type || "अन्य";
+
+                    const title =
+                        data.title ||
+                        "बिना शीर्षक की घोषणा";
+
+                    const message =
+                        data.message ||
+                        "कोई विवरण उपलब्ध नहीं है।";
+
+                    let dateText = "";
+
+                    if (data.createdAt) {
+
+                        try {
+
+                            dateText =
+                                data.createdAt
+                                    .toDate()
+                                    .toLocaleString("hi-IN");
+
+                        } catch (e) {
+
+                            dateText = "";
+                        }
+                    }
+
+                    const item =
+                        document.createElement("div");
+
+                    item.className =
+                        "notice-item";
+
+                    item.innerHTML = `
+                        <h3>📣 ${escapeHTML(title)}</h3>
+
+                        <p>
+                            <strong>प्रकार:</strong>
+                            ${escapeHTML(type)}
+                        </p>
+
+                        <p>
+                            ${escapeHTML(message)}
+                        </p>
+
+                        ${
+                            dateText
+                            ? `<div class="notice-date">
+                                📅 ${dateText}
+                               </div>`
+                            : ""
+                        }
+                    `;
+
+                    noticeList.appendChild(item);
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    "Announcement loading error:",
+                    error
+                );
+
+                noticeList.innerHTML =
+                    `<p style="color:#e50914;">
+                        ❌ घोषणाएँ लोड नहीं हो सकीं।<br>
+                        ${error.message}
+                    </p>`;
+            }
+
+        };
 
         /* SHOW NOTICES */
 
