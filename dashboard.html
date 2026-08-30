@@ -1786,7 +1786,41 @@ window.publishAnnouncement = async function () {
 
 };
 
+/* DOCUMENT FILE SELECTION */
 
+const documentInput =
+    document.getElementById("documentInput");
+
+const documentUploadButton =
+    document.getElementById("documentUploadButton");
+
+const documentFileName =
+    document.getElementById("documentFileName");
+
+documentUploadButton.addEventListener("click", () => {
+
+    documentInput.click();
+
+});
+
+documentInput.addEventListener("change", () => {
+
+    if (documentInput.files.length > 0) {
+
+        const selectedFile =
+            documentInput.files[0];
+
+        documentFileName.textContent =
+            "चयनित: " + selectedFile.name;
+
+        console.log(
+            "Selected document:",
+            selectedFile.name
+        );
+
+    }
+
+});
         /* HTML SAFE */
 
         function escapeHTML(text) {
