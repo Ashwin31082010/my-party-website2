@@ -885,6 +885,8 @@
     document.getElementById("documentSection");
         const addYojanaBox =
     document.getElementById("addYojanaBox");
+        const addDocumentBox =
+    document.getElementById("addDocumentBox");
 
 
         /* START */
@@ -1898,22 +1900,43 @@ window.publishDocument = async function () {
 
     try {
 
-        // Firebase Storage में file upload
-        const fileRef = ref(
-            storage,
-            "documents/" +
-            Date.now() +
-            "_" +
-            file.name
+        
+
+        /* CLOUDINARY UPLOAD */
+
+        const cloudinaryData = new FormData();
+
+        cloudinaryData.append("file", file);
+
+        cloudinaryData.append(
+            "upload_preset",
+            "lkk_party_upload"
         );
 
-        await uploadBytes(fileRef, file);
+        const cloudinaryResponse = await fetch(
+            "https://api.cloudinary.com/v1_1/uuutjc5c/auto/upload",
+            {
+                method: "POST",
+                body: cloudinaryData
+            }
+        );
 
-        // Download URL
+        const cloudinaryResult =
+            await cloudinaryResponse.json();
+
+        if (!cloudinaryResponse.ok) {
+            throw new Error(
+                cloudinaryResult.error?.message ||
+                "Cloudinary upload failed"
+            );
+        }
+
         const fileUrl =
-            await getDownloadURL(fileRef);
+            cloudinaryResult.secure_url;
 
-        // Firestore में document save
+
+        /* FIRESTORE में जानकारी SAVE */
+
         await addDoc(
             collection(db, "documents"),
             {
@@ -1926,18 +1949,24 @@ window.publishDocument = async function () {
             }
         );
 
+
         alert(
             "✅ दस्तावेज़ सफलतापूर्वक प्रकाशित हो गया!"
         );
 
-        // Form खाली करना
+
+        /* FORM खाली करना */
+
         document.getElementById("documentTitle")
             .value = "";
 
         fileInput.value = "";
 
-        // Form बंद करना
+
+        /* FORM बंद करना */
+
         addDocumentBox.style.display = "none";
+
 
     } catch (error) {
 
@@ -1954,6 +1983,8 @@ window.publishDocument = async function () {
     }
 
 };
+
+      
         /* HTML SAFE */
 
         function escapeHTML(text) {
