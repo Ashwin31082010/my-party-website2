@@ -558,19 +558,7 @@
                     + दस्तावेज Upload
                 </button>
 
-                <input
-    type="file"
-    id="photoInput"
-    accept="image/*"
-    hidden
->
 
-<button
-    type="button"
-    class="admin-btn"
-    id="photoUploadButton">
-    📸 Photo Upload
-</button>
 
             </div>
 
@@ -732,6 +720,23 @@
             resize:vertical;
         "
     ></textarea>
+    <input
+    type="file"
+    id="yojanaPhotoInput"
+    accept="image/*"
+    hidden
+>
+
+<button
+    type="button"
+    class="admin-btn"
+    id="yojanaPhotoButton">
+    📷 योजना की Photo चुनें
+</button>
+
+<span id="yojanaPhotoName" style="color:#888; margin-left:10px;">
+    कोई Photo चयनित नहीं
+</span>
 
     <br><br>
 
@@ -1121,7 +1126,41 @@ window.hideAddYojana = function () {
     addYojanaBox.style.display = "none";
 
 };
+/* YOJANA PHOTO SELECTION */
 
+const yojanaPhotoInput =
+    document.getElementById("yojanaPhotoInput");
+
+const yojanaPhotoButton =
+    document.getElementById("yojanaPhotoButton");
+
+const yojanaPhotoName =
+    document.getElementById("yojanaPhotoName");
+
+yojanaPhotoButton.addEventListener("click", () => {
+
+    yojanaPhotoInput.click();
+
+});
+
+yojanaPhotoInput.addEventListener("change", () => {
+
+    if (yojanaPhotoInput.files.length > 0) {
+
+        const selectedFile =
+            yojanaPhotoInput.files[0];
+
+        yojanaPhotoName.textContent =
+            "चयनित: " + selectedFile.name;
+
+        console.log(
+            "Selected yojana photo:",
+            selectedFile.name
+        );
+
+    }
+
+});
 
 /* PUBLISH YOJANA */
 
@@ -1732,27 +1771,6 @@ window.publishAnnouncement = async function () {
     }
 
 };
-        /* PHOTO FILE SELECTION */
-
-const photoInput = document.getElementById("photoInput");
-const photoUploadButton = document.getElementById("photoUploadButton");
-
-photoUploadButton.addEventListener("click", () => {
-    photoInput.click();
-});
-
-photoInput.addEventListener("change", () => {
-
-    if (photoInput.files.length > 0) {
-
-        const selectedFile = photoInput.files[0];
-
-        console.log("Selected photo:", selectedFile.name);
-
-        alert("✅ Photo select ho gayi:\n" + selectedFile.name);
-    }
-
-});
 
 
         /* HTML SAFE */
