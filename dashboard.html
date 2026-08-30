@@ -773,7 +773,46 @@ await showNotices();
             }
 
         }
+        /* ANNOUNCEMENT COUNT */
 
+        async function loadAnnouncementCount() {
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(db, "announcements")
+                    );
+
+                const count =
+                    document.getElementById(
+                        "announcementCount"
+                    );
+
+                if (snapshot.size > 0) {
+
+                    count.textContent =
+                        snapshot.size;
+
+                    count.style.display =
+                        "inline-block";
+
+                } else {
+
+                    count.style.display =
+                        "none";
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Announcement count error:",
+                    error
+                );
+
+            }
+
+        }
 
         /* SHOW NOTICES */
 
