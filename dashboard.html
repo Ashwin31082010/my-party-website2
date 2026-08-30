@@ -616,6 +616,10 @@
                 "Logged in:",
                 user.email
             );
+console.log("MY UID:", user.uid);
+
+const adminRef = doc(db, "admins", user.uid);
+console.log("ADMIN DOCUMENT ID:", user.uid);
 
 
 
