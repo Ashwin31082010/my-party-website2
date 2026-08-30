@@ -1162,6 +1162,68 @@ window.hideAddAnnouncement = function () {
             }
 
         };
+        /* PUBLISH ANNOUNCEMENT */
+
+window.publishAnnouncement = async function () {
+
+    const type =
+        document.getElementById("announcementType").value.trim();
+
+    const title =
+        document.getElementById("announcementTitle").value.trim();
+
+    const message =
+        document.getElementById("announcementMessage").value.trim();
+
+    if (!type || !title || !message) {
+
+        alert(
+            "कृपया घोषणा का प्रकार, Title और विवरण तीनों भरें।"
+        );
+
+        return;
+    }
+
+    try {
+
+        await addDoc(
+            collection(db, "announcements"),
+            {
+                type: type,
+                title: title,
+                message: message,
+                createdAt: serverTimestamp(),
+                createdBy: auth.currentUser.uid
+            }
+        );
+
+        alert(
+            "✅ घोषणा सफलतापूर्वक प्रकाशित हो गई!"
+        );
+
+        document.getElementById("announcementType").value = "";
+        document.getElementById("announcementTitle").value = "";
+        document.getElementById("announcementMessage").value = "";
+
+        await loadAnnouncementCount();
+
+        addAnnouncementBox.style.display = "none";
+
+    } catch (error) {
+
+        console.error(
+            "Publish announcement error:",
+            error
+        );
+
+        alert(
+            "❌ घोषणा प्रकाशित नहीं हो सकी!\n\n" +
+            error.message
+        );
+
+    }
+
+};
 
 
         /* HTML SAFE */
