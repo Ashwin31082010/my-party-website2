@@ -752,12 +752,12 @@
     </button>
 
 </div>
-        <!-- ADD DOCUMENT BOX -->
+<!-- ADD DOCUMENT BOX -->
 
 <div id="addDocumentBox" class="notice-section">
 
     <h2>
-        📄 नया दस्तावेज जोड़ें
+        📄 नया दस्तावेज़ जोड़ें
     </h2>
 
     <input
@@ -767,7 +767,7 @@
         style="
             width:100%;
             padding:14px;
-            margin-bottom:12px;
+            margin-bottom:15px;
             background:#080808;
             color:white;
             border:1px solid #292929;
@@ -785,15 +785,9 @@
     <button
         type="button"
         class="admin-btn"
-        id="documentPhotoButton">
-        📷 दस्तावेज़ की Photo/PDF चुनें
+        onclick="document.getElementById('documentInput').click()">
+        + दस्तावेज़
     </button>
-
-    <span
-        id="documentFileName"
-        style="color:#888; margin-left:10px;">
-        कोई दस्तावेज़ चयनित नहीं
-    </span>
 
     <br><br>
 
@@ -1100,10 +1094,10 @@ window.showDocuments = async function () {
                 data.title ||
                 "दस्तावेज़";
 
-            const imageUrl =
-                data.imageUrl;
+          const fileUrl =
+    data.fileUrl;
 
-            if (!imageUrl) return;
+if (!fileUrl) return;
 
             const item =
                 document.createElement("div");
@@ -1111,21 +1105,46 @@ window.showDocuments = async function () {
             item.className =
                 "notice-item";
 
-            item.innerHTML = `
-                <h3>📄 ${escapeHTML(title)}</h3>
+           if (data.fileType === "application/pdf") {
 
-                <img
-                    src="${escapeHTML(imageUrl)}"
-                    alt="${escapeHTML(title)}"
-                    style="
-                        width:100%;
-                        max-width:700px;
-                        border-radius:8px;
-                        margin-top:10px;
-                        display:block;
-                    "
-                >
-            `;
+    item.innerHTML = `
+        <h3>📄 ${escapeHTML(title)}</h3>
+
+        <a
+            href="${escapeHTML(fileUrl)}"
+            target="_blank"
+            style="
+                display:inline-block;
+                margin-top:15px;
+                padding:10px 16px;
+                background:#e50914;
+                color:white;
+                text-decoration:none;
+                border-radius:5px;
+            ">
+            📄 PDF खोलें
+        </a>
+    `;
+
+} else {
+
+    item.innerHTML = `
+        <h3>📄 ${escapeHTML(title)}</h3>
+
+        <img
+            src="${escapeHTML(fileUrl)}"
+            alt="${escapeHTML(title)}"
+            style="
+                width:100%;
+                max-width:700px;
+                border-radius:8px;
+                margin-top:10px;
+                display:block;
+            "
+        >
+    `;
+
+}
 
             documentList.appendChild(item);
 
@@ -1833,49 +1852,108 @@ window.publishAnnouncement = async function () {
 
 };
 
-/* DOCUMENT FILE SELECTION */
+/* DOCUMENT SYSTEM */
 
-window.openDocumentPicker = function () {
+window.showAddDocument = function () {
 
-    const input =
-        document.getElementById("documentInput");
+    addDocumentBox.style.display = "block";
 
-    input.click();
+    addDocumentBox.scrollIntoView({
+        behavior: "smooth"
+    });
 
 };
-        const documentPhotoButton =
-    document.getElementById("documentPhotoButton");
 
-const documentInput =
-    document.getElementById("documentInput");
+window.hideAddDocument = function () {
 
-documentPhotoButton.addEventListener("click", () => {
-    documentInput.click();
-});
+    addDocumentBox.style.display = "none";
+
+};
 
 
-document
-    .getElementById("documentInput")
-    .addEventListener("change", function () {
+/* PUBLISH DOCUMENT */
 
-        if (this.files.length > 0) {
+window.publishDocument = async function () {
 
-            const selectedFile =
-                this.files[0];
+    const title =
+        document.getElementById("documentTitle")
+            .value.trim();
 
-            document
-                .getElementById("documentFileName")
-                .textContent =
-                "चयनित: " + selectedFile.name;
+    const fileInput =
+        document.getElementById("documentInput");
 
-            console.log(
-                "Selected document:",
-                selectedFile.name
-            );
+    if (!title) {
 
-        }
+        alert("कृपया दस्तावेज़ का Title लिखें।");
+        return;
+    }
 
-    });
+    if (fileInput.files.length === 0) {
+
+        alert("कृपया Photo या PDF चुनें।");
+        return;
+    }
+
+    const file = fileInput.files[0];
+
+    try {
+
+        // Firebase Storage में file upload
+        const fileRef = ref(
+            storage,
+            "documents/" +
+            Date.now() +
+            "_" +
+            file.name
+        );
+
+        await uploadBytes(fileRef, file);
+
+        // Download URL
+        const fileUrl =
+            await getDownloadURL(fileRef);
+
+        // Firestore में document save
+        await addDoc(
+            collection(db, "documents"),
+            {
+                title: title,
+                fileUrl: fileUrl,
+                fileName: file.name,
+                fileType: file.type,
+                createdAt: serverTimestamp(),
+                createdBy: auth.currentUser.uid
+            }
+        );
+
+        alert(
+            "✅ दस्तावेज़ सफलतापूर्वक प्रकाशित हो गया!"
+        );
+
+        // Form खाली करना
+        document.getElementById("documentTitle")
+            .value = "";
+
+        fileInput.value = "";
+
+        // Form बंद करना
+        addDocumentBox.style.display = "none";
+
+    } catch (error) {
+
+        console.error(
+            "Document upload error:",
+            error
+        );
+
+        alert(
+            "❌ दस्तावेज़ प्रकाशित नहीं हो सका!\n\n" +
+            error.message
+        );
+
+    }
+
+};
         /* HTML SAFE */
 
         function escapeHTML(text) {
