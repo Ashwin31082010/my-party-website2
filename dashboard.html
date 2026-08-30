@@ -554,7 +554,7 @@
                     + योजना जोड़ें
                 </button>
 
-               <input
+   <input
     type="file"
     id="documentInput"
     accept="image/*,.pdf"
@@ -564,11 +564,13 @@
 <button
     type="button"
     class="admin-btn"
-    id="documentUploadButton">
+    onclick="openDocumentPicker()">
     📄 दस्तावेज Upload
 </button>
 
-<span id="documentFileName" style="color:#888; margin-left:10px;">
+<span
+    id="documentFileName"
+    style="color:#888; margin-left:10px;">
     कोई दस्तावेज़ चयनित नहीं
 </span>
 
@@ -1788,39 +1790,38 @@ window.publishAnnouncement = async function () {
 
 /* DOCUMENT FILE SELECTION */
 
-const documentInput =
-    document.getElementById("documentInput");
+window.openDocumentPicker = function () {
 
-const documentUploadButton =
-    document.getElementById("documentUploadButton");
+    const input =
+        document.getElementById("documentInput");
 
-const documentFileName =
-    document.getElementById("documentFileName");
+    input.click();
 
-documentUploadButton.addEventListener("click", () => {
+};
 
-    documentInput.click();
 
-});
+document
+    .getElementById("documentInput")
+    .addEventListener("change", function () {
 
-documentInput.addEventListener("change", () => {
+        if (this.files.length > 0) {
 
-    if (documentInput.files.length > 0) {
+            const selectedFile =
+                this.files[0];
 
-        const selectedFile =
-            documentInput.files[0];
+            document
+                .getElementById("documentFileName")
+                .textContent =
+                "चयनित: " + selectedFile.name;
 
-        documentFileName.textContent =
-            "चयनित: " + selectedFile.name;
+            console.log(
+                "Selected document:",
+                selectedFile.name
+            );
 
-        console.log(
-            "Selected document:",
-            selectedFile.name
-        );
+        }
 
-    }
-
-});
+    });
         /* HTML SAFE */
 
         function escapeHTML(text) {
