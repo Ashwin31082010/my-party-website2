@@ -1018,6 +1018,30 @@ window.showDocuments = async function () {
     }
 
 };
+        /* HIDE DOCUMENTS */
+
+window.hideDocuments = function () {
+
+    documentSection.style.display = "none";
+
+    dashboardGrid.style.display = "grid";
+
+    if (
+        document.querySelector(".user-name")
+            .textContent
+            .includes("Admin")
+    ) {
+        adminPanel.style.display = "block";
+    } else {
+        adminPanel.style.display = "none";
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+};
 /* SHOW YOJANA */
 
 window.showYojana = async function () {
