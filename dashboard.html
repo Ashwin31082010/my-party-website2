@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>LKK PARTY | Dashboard</title>
 
     <style>
@@ -24,10 +25,16 @@
             height: 70px;
             background: #0d0d0d;
             border-bottom: 1px solid #2a2a2a;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             padding: 0 35px;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
@@ -121,40 +128,49 @@
             font-size: 14px;
         }
 
-        .card-button,
-        .admin-btn {
+        .card-button {
             margin-top: 20px;
             padding: 10px 16px;
+
             background: #e50914;
             color: white;
+
             border: none;
             border-radius: 5px;
+
             cursor: pointer;
             font-weight: bold;
         }
 
-        .card-button:hover,
-        .admin-btn:hover {
+        .card-button:hover {
             background: #ff202a;
         }
 
         #noticeCount {
             display: none;
+
             background: #e50914;
             color: white;
+
             min-width: 24px;
             padding: 3px 7px;
+
             margin-left: 6px;
+
             border-radius: 50px;
+
             font-size: 13px;
             text-align: center;
         }
 
+        /* ADMIN PANEL */
+
         .admin-panel {
-            display: none;
             margin-top: 30px;
+
             background: #120808;
             border: 1px solid #4b1111;
+
             border-radius: 10px;
             padding: 25px;
         }
@@ -176,68 +192,99 @@
         }
 
         .admin-btn {
-            margin-top: 0;
-        }
+            padding: 11px 17px;
 
-        .notice-form {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background: #0b0b0b;
-            border: 1px solid #333;
-            border-radius: 8px;
-        }
-
-        .notice-form h3 {
-            margin-bottom: 15px;
-        }
-
-        .notice-form input,
-        .notice-form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 12px;
-            background: #151515;
-            border: 1px solid #333;
-            color: white;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .notice-form textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .save-btn {
             background: #e50914;
             color: white;
+
             border: none;
-            padding: 11px 18px;
             border-radius: 5px;
+
             cursor: pointer;
             font-weight: bold;
         }
 
-        .cancel-btn {
+        .admin-btn:hover {
+            background: #ff202a;
+        }
+
+        /* NOTICE SECTION */
+
+        .notice-section {
+            display: none;
+
+            margin-top: 30px;
+
+            background: #111;
+            border: 1px solid #292929;
+
+            border-radius: 10px;
+            padding: 25px;
+        }
+
+        .notice-section h2 {
+            color: #e50914;
+            margin-bottom: 20px;
+        }
+
+        .notice-item {
+            background: #0b0b0b;
+
+            border: 1px solid #292929;
+            border-left: 4px solid #e50914;
+
+            border-radius: 7px;
+
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .notice-item h3 {
+            margin-bottom: 8px;
+        }
+
+        .notice-item p {
+            color: #bbb;
+            line-height: 1.6;
+        }
+
+        .notice-date {
+            color: #777;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .back-button {
             background: #333;
             color: white;
+
             border: none;
-            padding: 11px 18px;
             border-radius: 5px;
+
+            padding: 10px 16px;
+
             cursor: pointer;
-            margin-left: 8px;
+            margin-top: 10px;
+        }
+
+        .back-button:hover {
+            background: #444;
         }
 
         footer {
             text-align: center;
+
             padding: 30px 15px;
+
             color: #666;
+
             border-top: 1px solid #222;
+
             margin-top: 50px;
         }
 
         @media (max-width: 700px) {
+
             header {
                 padding: 0 15px;
             }
@@ -254,398 +301,755 @@
                 padding: 30px 15px;
             }
 
+            .welcome h1 {
+                font-size: 27px;
+            }
+
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
+
 </head>
 
 <body>
 
-<header>
-    <div class="logo">
-        <span>LKK</span> PARTY
-    </div>
+    <!-- HEADER -->
 
-    <div class="user-area">
-        <div class="user-name">स्वागत है, सदस्य</div>
+    <header>
 
-        <button class="logout" onclick="logout()">
-            Logout
-        </button>
-    </div>
-</header>
+        <div class="logo">
+            <span>LKK</span> PARTY
+        </div>
 
-<main>
+        <div class="user-area">
 
-    <div class="welcome">
-        <h1>
-            LKK PARTY <span>Dashboard</span>
-        </h1>
+            <div class="user-name">
+                स्वागत है, सदस्य
+            </div>
 
-        <p>
-            पार्टी से संबंधित नवीनतम सूचना, घोषणा और दस्तावेज यहाँ देखें।
-        </p>
-    </div>
+            <button class="logout" onclick="logout()">
+                Logout
+            </button>
 
-    <div class="dashboard-grid">
+        </div>
 
-        <div class="card">
-            <div class="card-icon">📢</div>
+    </header>
+
+
+    <main>
+
+        <div class="welcome">
+
+            <h1>
+                LKK PARTY <span>Dashboard</span>
+            </h1>
+
+            <p>
+                पार्टी से संबंधित नवीनतम सूचना, घोषणा और दस्तावेज यहाँ देखें।
+            </p>
+
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <div id="dashboardGrid" class="dashboard-grid">
+
+            <!-- NOTICE -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📢
+                </div>
+
+                <h2>
+                    सूचना / Notice
+
+                    <span id="noticeCount">
+                        0
+                    </span>
+                </h2>
+
+                <p>
+                    पार्टी द्वारा जारी की गई महत्वपूर्ण सूचनाएँ यहाँ दिखाई देंगी।
+                </p>
+
+                <button class="card-button" onclick="showNotices()">
+                    सूचनाएँ देखें
+                </button>
+
+            </div>
+
+
+            <!-- ANNOUNCEMENT -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📣
+                </div>
+
+                <h2>
+                    घोषणाएँ
+                </h2>
+
+                <p>
+                    पार्टी की नवीनतम घोषणाएँ और महत्वपूर्ण संदेश यहाँ उपलब्ध होंगे।
+                </p>
+
+                <button class="card-button">
+                    घोषणाएँ देखें
+                </button>
+
+            </div>
+
+
+            <!-- YOJANA -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📜
+                </div>
+
+                <h2>
+                    योजना घोषणाएँ
+                </h2>
+
+                <p>
+                    पार्टी द्वारा बनाई गई योजनाओं और उनके विवरण यहाँ देखे जा सकेंगे।
+                </p>
+
+                <button class="card-button">
+                    योजनाएँ देखें
+                </button>
+
+            </div>
+
+
+            <!-- DOCUMENT -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📄
+                </div>
+
+                <h2>
+                    दस्तावेज
+                </h2>
+
+                <p>
+                    पार्टी से संबंधित आवश्यक दस्तावेज यहाँ उपलब्ध होंगे।
+                </p>
+
+                <button class="card-button">
+                    दस्तावेज देखें
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOTICE LIST -->
+
+        <div id="noticeSection" class="notice-section">
 
             <h2>
-                सूचना / Notice
-                <span id="noticeCount">0</span>
+                📢 सभी सूचनाएँ
+            </h2>
+
+            <div id="noticeList">
+                सूचनाएँ लोड हो रही हैं...
+            </div>
+
+            <button class="back-button" onclick="hideNotices()">
+                ← Dashboard पर वापस जाएँ
+            </button>
+
+        </div>
+
+
+        <!-- ADMIN PANEL -->
+
+        <div id="adminPanel" class="admin-panel">
+
+            <h2>
+                👑 Admin Panel
             </h2>
 
             <p>
-                पार्टी द्वारा जारी की गई महत्वपूर्ण सूचनाएँ यहाँ दिखाई देंगी।
+                केवल अधिकृत Admin के लिए।
             </p>
 
-            <button class="card-button" onclick="showNotices()">
-                सूचनाएँ देखें
-            </button>
-        </div>
+            <div class="admin-buttons">
 
-        <div class="card">
-            <div class="card-icon">📣</div>
+                <button class="admin-btn" onclick="showAddNotice()">
+                    + नई सूचना
+                </button>
 
-            <h2>घोषणाएँ</h2>
+                <button class="admin-btn">
+                    + नई घोषणा
+                </button>
 
-            <p>
-                पार्टी की नवीनतम घोषणाएँ और महत्वपूर्ण संदेश यहाँ उपलब्ध होंगे।
-            </p>
+                <button class="admin-btn">
+                    + योजना जोड़ें
+                </button>
 
-            <button class="card-button">
-                घोषणाएँ देखें
-            </button>
-        </div>
+                <button class="admin-btn">
+                    + दस्तावेज Upload
+                </button>
 
-        <div class="card">
-            <div class="card-icon">📜</div>
+                <button class="admin-btn">
+                    📸 Photo Upload
+                </button>
 
-            <h2>योजना घोषणाएँ</h2>
-
-            <p>
-                पार्टी द्वारा बनाई गई योजनाओं और उनके विवरण यहाँ देखे जा सकेंगे।
-            </p>
-
-            <button class="card-button">
-                योजनाएँ देखें
-            </button>
-        </div>
-
-        <div class="card">
-            <div class="card-icon">📄</div>
-
-            <h2>दस्तावेज</h2>
-
-            <p>
-                पार्टी से संबंधित आवश्यक दस्तावेज यहाँ उपलब्ध होंगे।
-            </p>
-
-            <button class="card-button">
-                दस्तावेज देखें
-            </button>
-        </div>
-
-    </div>
-
-    <!-- ADMIN PANEL -->
-
-    <div class="admin-panel">
-
-        <h2>👑 Admin Panel</h2>
-
-        <p>केवल अधिकृत Admin के लिए।</p>
-
-        <div class="admin-buttons">
-
-            <button class="admin-btn" onclick="openNoticeForm()">
-                + नई सूचना
-            </button>
-
-            <button class="admin-btn">
-                + नई घोषणा
-            </button>
-
-            <button class="admin-btn">
-                + योजना जोड़ें
-            </button>
-
-            <button class="admin-btn">
-                + दस्तावेज Upload
-            </button>
-
-            <button class="admin-btn">
-                📸 Photo Upload
-            </button>
+            </div>
 
         </div>
 
-        <!-- NOTICE FORM -->
 
-        <div class="notice-form" id="noticeForm">
+        <!-- ADD NOTICE -->
 
-            <h3>📢 नई सूचना जोड़ें</h3>
+        <div id="addNoticeBox" class="notice-section">
+
+            <h2>
+                📢 नई सूचना जोड़ें
+            </h2>
 
             <input
-                type="text"
                 id="noticeTitle"
+                type="text"
                 placeholder="सूचना का शीर्षक"
+                style="
+                    width:100%;
+                    padding:14px;
+                    margin-bottom:12px;
+                    background:#080808;
+                    color:white;
+                    border:1px solid #292929;
+                    border-radius:5px;
+                "
             >
 
             <textarea
                 id="noticeMessage"
-                placeholder="सूचना यहाँ लिखें..."
+                placeholder="सूचना लिखें..."
+                style="
+                    width:100%;
+                    height:140px;
+                    padding:14px;
+                    background:#080808;
+                    color:white;
+                    border:1px solid #292929;
+                    border-radius:5px;
+                    resize:vertical;
+                "
             ></textarea>
 
-            <button class="save-btn" onclick="addNotice()">
+            <br><br>
+
+            <button class="admin-btn" onclick="publishNotice()">
                 सूचना प्रकाशित करें
             </button>
 
-            <button class="cancel-btn" onclick="closeNoticeForm()">
+            <button class="back-button" onclick="hideAddNotice()">
                 रद्द करें
             </button>
 
         </div>
 
-    </div>
-
-</main>
-
-<footer>
-    © 2026 LKK PARTY — सभी अधिकार सुरक्षित
-</footer>
+    </main>
 
 
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-}
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-    getFirestore,
-    doc,
-    getDoc,
-    collection,
-    getDocs,
-    addDoc,
-    serverTimestamp
-}
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    <footer>
+        © 2026 LKK PARTY — सभी अधिकार सुरक्षित
+    </footer>
 
 
-const firebaseConfig = {
+    <!-- FIREBASE -->
 
-    apiKey: "AIzaSyDJpoidkKYkz0sNYWUmfNxUUdMkGlwEuDg",
+    <script type="module">
 
-    authDomain: "lkk-party.firebaseapp.com",
+        import {
+            initializeApp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-    projectId: "lkk-party",
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    storageBucket: "lkk-party.firebasestorage.app",
-
-    messagingSenderId: "379113199782",
-
-    appId: "1:379113199782:web:4e01e88865687d9f20fc67",
-
-    measurementId: "G-1NJXH7LXRX"
-};
-
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-const adminPanel = document.querySelector(".admin-panel");
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            collection,
+            getDocs,
+            addDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-onAuthStateChanged(auth, async (user) => {
+        /* FIREBASE CONFIG */
 
-    if (!user) {
-        window.location.href = "login.html";
-        return;
-    }
+        const firebaseConfig = {
 
-    console.log("Logged in:", user.email);
+            apiKey: "AIzaSyDJpoidkKYkz0sNYWUmfNxUUdMkGlwEuDg",
 
-    console.log("User UID:", user.uid);
+            authDomain: "lkk-party.firebaseapp.com",
 
-    try {
+            projectId: "lkk-party",
 
-        const adminRef = doc(
-            db,
-            "admins",
-            user.uid
-        );
+            storageBucket: "lkk-party.firebasestorage.app",
 
-        const adminSnap = await getDoc(adminRef);
+            messagingSenderId: "379113199782",
 
-        console.log(
-            "Admin document exists:",
-            adminSnap.exists()
-        );
+            appId: "1:379113199782:web:4e01e88865687d9f20fc67",
+
+            measurementId: "G-1NJXH7LXRX"
+
+        };
 
 
-        if (
-            adminSnap.exists() &&
-            adminSnap.data().role === "admin"
-        ) {
+        const app = initializeApp(firebaseConfig);
 
-            console.log("ADMIN LOGIN SUCCESS");
+        const auth = getAuth(app);
 
-            adminPanel.style.display = "block";
+        const db = getFirestore(app);
 
-            document.querySelector(".user-name").textContent =
-                "स्वागत है, Admin 👑";
 
-        } else {
+        const adminPanel =
+            document.getElementById("adminPanel");
+
+        const noticeSection =
+            document.getElementById("noticeSection");
+
+        const dashboardGrid =
+            document.getElementById("dashboardGrid");
+
+        const addNoticeBox =
+            document.getElementById("addNoticeBox");
+
+
+        /* START */
+
+        onAuthStateChanged(auth, async (user) => {
+
+            if (!user) {
+
+                window.location.href = "login.html";
+
+                return;
+            }
+
+
+            console.log("Logged in:", user.email);
+
+            console.log("User UID:", user.uid);
+
+
+            try {
+
+                /* ADMIN CHECK */
+
+                const adminRef =
+                    doc(db, "admins", user.uid);
+
+                const adminSnap =
+                    await getDoc(adminRef);
+
+
+                console.log(
+                    "Admin document exists:",
+                    adminSnap.exists()
+                );
+
+
+                if (
+                    adminSnap.exists() &&
+                    adminSnap.data().role === "admin"
+                ) {
+
+                    console.log("ADMIN LOGIN SUCCESS");
+
+                    adminPanel.style.display = "block";
+
+                    document.querySelector(".user-name")
+                        .textContent =
+                        "स्वागत है, Admin 👑";
+
+                } else {
+
+                    adminPanel.style.display = "none";
+
+                    document.querySelector(".user-name")
+                        .textContent =
+                        "स्वागत है, सदस्य";
+                }
+
+
+                await loadNoticeCount();
+
+            } catch (error) {
+
+                console.error(
+                    "Admin check error:",
+                    error
+                );
+
+                adminPanel.style.display = "none";
+            }
+
+        });
+
+
+        /* NOTICE COUNT */
+
+        async function loadNoticeCount() {
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(db, "notices")
+                    );
+
+
+                const count =
+                    document.getElementById(
+                        "noticeCount"
+                    );
+
+
+                if (snapshot.size > 0) {
+
+                    count.textContent =
+                        snapshot.size;
+
+                    count.style.display =
+                        "inline-block";
+
+                } else {
+
+                    count.style.display =
+                        "none";
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Notice count error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* SHOW NOTICES */
+
+        window.showNotices = async function () {
+
+            dashboardGrid.style.display = "none";
 
             adminPanel.style.display = "none";
 
-            document.querySelector(".user-name").textContent =
-                "स्वागत है, सदस्य";
-        }
+            noticeSection.style.display = "block";
 
-        await loadNoticeCount();
-
-    } catch (error) {
-
-        console.error("Admin check error:", error);
-
-        adminPanel.style.display = "none";
-    }
-
-});
+            noticeSection.scrollIntoView({
+                behavior: "smooth"
+            });
 
 
-async function loadNoticeCount() {
-
-    try {
-
-        const noticesRef = collection(db, "notices");
-
-        const snapshot = await getDocs(noticesRef);
-
-        const noticeCount =
-            document.getElementById("noticeCount");
-
-        if (snapshot.size > 0) {
-
-            noticeCount.textContent = snapshot.size;
-
-            noticeCount.style.display = "inline-block";
-
-        } else {
-
-            noticeCount.style.display = "none";
-        }
-
-    } catch (error) {
-
-        console.error("Notice count error:", error);
-    }
-}
+            const noticeList =
+                document.getElementById("noticeList");
 
 
-window.openNoticeForm = function () {
-
-    document.getElementById("noticeForm").style.display = "block";
-};
+            noticeList.innerHTML =
+                "सूचनाएँ लोड हो रही हैं...";
 
 
-window.closeNoticeForm = function () {
+            try {
 
-    document.getElementById("noticeForm").style.display = "none";
-};
-
-
-window.addNotice = async function () {
-
-    const title =
-        document.getElementById("noticeTitle").value.trim();
-
-    const message =
-        document.getElementById("noticeMessage").value.trim();
+                const snapshot =
+                    await getDocs(
+                        collection(db, "notices")
+                    );
 
 
-    if (!title || !message) {
+                if (snapshot.empty) {
 
-        alert("कृपया शीर्षक और सूचना दोनों भरें।");
+                    noticeList.innerHTML =
+                        "<p style='color:#888;'>अभी कोई सूचना उपलब्ध नहीं है।</p>";
 
-        return;
-    }
+                    return;
+                }
 
 
-    try {
+                noticeList.innerHTML = "";
 
-        await addDoc(
-            collection(db, "notices"),
-            {
-                title: title,
-                message: message,
-                createdAt: serverTimestamp(),
-                createdBy: auth.currentUser.uid
+
+                snapshot.forEach((noticeDoc) => {
+
+                    const data =
+                        noticeDoc.data();
+
+
+                    const title =
+                        data.title ||
+                        "बिना शीर्षक की सूचना";
+
+
+                    const message =
+                        data.message ||
+                        "कोई विवरण उपलब्ध नहीं है।";
+
+
+                    let dateText = "";
+
+
+                    if (data.createdAt) {
+
+                        try {
+
+                            dateText =
+                                data.createdAt
+                                    .toDate()
+                                    .toLocaleString(
+                                        "hi-IN"
+                                    );
+
+                        } catch (e) {
+
+                            dateText = "";
+
+                        }
+
+                    }
+
+
+                    const item =
+                        document.createElement("div");
+
+
+                    item.className =
+                        "notice-item";
+
+
+                    item.innerHTML = `
+                        <h3>📢 ${escapeHTML(title)}</h3>
+
+                        <p>${escapeHTML(message)}</p>
+
+                        ${
+                            dateText
+                            ? `<div class="notice-date">
+                                📅 ${dateText}
+                               </div>`
+                            : ""
+                        }
+                    `;
+
+
+                    noticeList.appendChild(item);
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Notice loading error:",
+                    error
+                );
+
+
+                noticeList.innerHTML =
+                    `<p style="color:#e50914;">
+                        ❌ Notices लोड नहीं हो सके।<br>
+                        ${error.message}
+                    </p>`;
             }
-        );
+
+        };
 
 
-        alert("✅ सूचना सफलतापूर्वक प्रकाशित हो गई!");
+        /* HIDE NOTICES */
 
-        document.getElementById("noticeTitle").value = "";
+        window.hideNotices = function () {
 
-        document.getElementById("noticeMessage").value = "";
+            noticeSection.style.display = "none";
 
-        closeNoticeForm();
+            dashboardGrid.style.display = "grid";
 
-        await loadNoticeCount();
+            if (
+                document.querySelector(".user-name")
+                    .textContent
+                    .includes("Admin")
+            ) {
 
+                adminPanel.style.display = "block";
 
-    } catch (error) {
+            }
 
-        console.error("Notice add error:", error);
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
 
-        alert(
-            "❌ सूचना प्रकाशित नहीं हो सकी।\n\n" +
-            error.message
-        );
-    }
-
-};
-
-
-window.showNotices = function () {
-
-    alert("अगले चरण में यहाँ सभी Notices दिखाई जाएँगी।");
-};
+        };
 
 
-window.logout = async function () {
+        /* ADD NOTICE BOX */
 
-    try {
+        window.showAddNotice = function () {
 
-        await signOut(auth);
+            addNoticeBox.style.display = "block";
 
-        window.location.href = "index.html";
+            addNoticeBox.scrollIntoView({
+                behavior: "smooth"
+            });
 
-    } catch (error) {
+        };
 
-        console.error("Logout error:", error);
-    }
-};
 
-</script>
+        window.hideAddNotice = function () {
+
+            addNoticeBox.style.display = "none";
+
+        };
+
+
+        /* PUBLISH NOTICE */
+
+        window.publishNotice = async function () {
+
+            const title =
+                document.getElementById(
+                    "noticeTitle"
+                ).value.trim();
+
+
+            const message =
+                document.getElementById(
+                    "noticeMessage"
+                ).value.trim();
+
+
+            if (!title || !message) {
+
+                alert(
+                    "कृपया Title और Notice दोनों लिखें।"
+                );
+
+                return;
+            }
+
+
+            try {
+
+                await addDoc(
+                    collection(db, "notices"),
+                    {
+
+                        title: title,
+
+                        message: message,
+
+                        createdAt:
+                            serverTimestamp(),
+
+                        createdBy:
+                            auth.currentUser.uid
+
+                    }
+                );
+
+
+                alert(
+                    "✅ सूचना सफलतापूर्वक प्रकाशित हो गई!"
+                );
+
+
+                document.getElementById(
+                    "noticeTitle"
+                ).value = "";
+
+
+                document.getElementById(
+                    "noticeMessage"
+                ).value = "";
+
+
+                await loadNoticeCount();
+
+
+                addNoticeBox.style.display =
+                    "none";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Publish notice error:",
+                    error
+                );
+
+
+                alert(
+                    "❌ सूचना प्रकाशित नहीं हो सकी!\n\n" +
+                    error.message
+                );
+
+            }
+
+        };
+
+
+        /* HTML SAFE */
+
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent = text;
+
+            return div.innerHTML;
+        }
+
+
+        /* LOGOUT */
+
+        window.logout = async function () {
+
+            try {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "index.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+            }
+
+        };
+
+    </script>
 
 </body>
+
 </html>
