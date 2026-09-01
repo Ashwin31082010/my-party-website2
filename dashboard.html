@@ -1277,6 +1277,102 @@ window.deleteDocument = async function (documentId) {
     }
 
 };
+        /* DELETE NOTICE */
+
+window.deleteNotice = async function (noticeId) {
+
+    if (!confirm("क्या आप इस सूचना को हटाना चाहते हैं?")) {
+        return;
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(db, "notices", noticeId)
+        );
+
+        alert("✅ सूचना हटा दी गई!");
+
+        await loadNoticeCount();
+        await showNotices();
+
+    } catch (error) {
+
+        console.error("Delete notice error:", error);
+
+        alert(
+            "❌ सूचना हटाई नहीं जा सकी!\n\n" +
+            error.message
+        );
+    }
+};
+
+
+/* DELETE ANNOUNCEMENT */
+
+window.deleteAnnouncement = async function (announcementId) {
+
+    if (!confirm("क्या आप इस घोषणा को हटाना चाहते हैं?")) {
+        return;
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(db, "announcements", announcementId)
+        );
+
+        alert("✅ घोषणा हटा दी गई!");
+
+        await loadAnnouncementCount();
+        await showAnnouncements();
+
+    } catch (error) {
+
+        console.error(
+            "Delete announcement error:",
+            error
+        );
+
+        alert(
+            "❌ घोषणा हटाई नहीं जा सकी!\n\n" +
+            error.message
+        );
+    }
+};
+
+
+/* DELETE YOJANA */
+
+window.deleteYojana = async function (yojanaId) {
+
+    if (!confirm("क्या आप इस योजना को हटाना चाहते हैं?")) {
+        return;
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(db, "yojana", yojanaId)
+        );
+
+        alert("✅ योजना हटा दी गई!");
+
+        await showYojana();
+
+    } catch (error) {
+
+        console.error(
+            "Delete yojana error:",
+            error
+        );
+
+        alert(
+            "❌ योजना हटाई नहीं जा सकी!\n\n" +
+            error.message
+        );
+    }
+};
         /* HIDE DOCUMENTS */
 
 window.hideDocuments = function () {
@@ -1544,6 +1640,25 @@ window.showYojana = async function () {
         `
         : ""
     }
+
+    ${
+        document.querySelector(".user-name")
+            .textContent
+            .includes("Admin")
+        ? `
+            <button
+                type="button"
+                class="admin-btn"
+                style="
+                    margin-top:15px;
+                    background:#8b0000;
+                "
+                onclick="deleteYojana('${yojanaDoc.id}')">
+                🗑️ योजना हटाएँ
+            </button>
+        `
+        : ""
+    }
 `;
 
             yojanaList.appendChild(item);
@@ -1668,25 +1783,44 @@ window.hideYojana = function () {
                         "notice-item";
 
                     item.innerHTML = `
-                        <h3>📣 ${escapeHTML(title)}</h3>
+    <h3>📣 ${escapeHTML(title)}</h3>
 
-                        <p>
-                            <strong>प्रकार:</strong>
-                            ${escapeHTML(type)}
-                        </p>
+    <p>
+        <strong>प्रकार:</strong>
+        ${escapeHTML(type)}
+    </p>
 
-                        <p>
-                            ${escapeHTML(message)}
-                        </p>
+    <p>
+        ${escapeHTML(message)}
+    </p>
 
-                        ${
-                            dateText
-                            ? `<div class="notice-date">
-                                📅 ${dateText}
-                               </div>`
-                            : ""
-                        }
-                    `;
+    ${
+        dateText
+        ? `<div class="notice-date">
+            📅 ${dateText}
+           </div>`
+        : ""
+    }
+
+    ${
+        document.querySelector(".user-name")
+            .textContent
+            .includes("Admin")
+        ? `
+            <button
+                type="button"
+                class="admin-btn"
+                style="
+                    margin-top:15px;
+                    background:#8b0000;
+                "
+                onclick="deleteAnnouncement('${announcementDoc.id}')">
+                🗑️ घोषणा हटाएँ
+            </button>
+        `
+        : ""
+    }
+`;
 
                     noticeList.appendChild(item);
 
@@ -1799,18 +1933,37 @@ window.hideYojana = function () {
 
 
                     item.innerHTML = `
-                        <h3>📢 ${escapeHTML(title)}</h3>
+    <h3>📢 ${escapeHTML(title)}</h3>
 
-                        <p>${escapeHTML(message)}</p>
+    <p>${escapeHTML(message)}</p>
 
-                        ${
-                            dateText
-                            ? `<div class="notice-date">
-                                📅 ${dateText}
-                               </div>`
-                            : ""
-                        }
-                    `;
+    ${
+        dateText
+        ? `<div class="notice-date">
+            📅 ${dateText}
+           </div>`
+        : ""
+    }
+
+    ${
+        document.querySelector(".user-name")
+            .textContent
+            .includes("Admin")
+        ? `
+            <button
+                type="button"
+                class="admin-btn"
+                style="
+                    margin-top:15px;
+                    background:#8b0000;
+                "
+                onclick="deleteNotice('${noticeDoc.id}')">
+                🗑️ सूचना हटाएँ
+            </button>
+        `
+        : ""
+    }
+`;
 
 
                     noticeList.appendChild(item);
