@@ -776,18 +776,24 @@
     >
 
     <input
-        type="file"
-        id="documentInput"
-        accept="image/*,.pdf"
-        hidden
-    >
+    type="file"
+    id="documentInput"
+    accept="image/*,.pdf"
+    hidden
+>
 
-    <button
-        type="button"
-        class="admin-btn"
-        onclick="document.getElementById('documentInput').click()">
-        + दस्तावेज़
-    </button>
+<button
+    type="button"
+    class="admin-btn"
+    id="documentChooseButton">
+    📄 दस्तावेज़ चुनें
+</button>
+
+<span
+    id="documentFileName"
+    style="color:#888; margin-left:10px;">
+    कोई दस्तावेज़ चयनित नहीं
+</span>
 
     <br><br>
 
@@ -834,6 +840,7 @@
             collection,
             getDocs,
             addDoc,
+            deleteDoc,
             serverTimestamp
         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -1047,7 +1054,7 @@ addAnnouncementBox.style.display = "none";
             }
 
         }
-        /* SHOW DOCUMENTS */
+  /* SHOW DOCUMENTS */
 
 window.showDocuments = async function () {
 
@@ -1057,6 +1064,7 @@ window.showDocuments = async function () {
     yojanaSection.style.display = "none";
     addNoticeBox.style.display = "none";
     addAnnouncementBox.style.display = "none";
+    addDocumentBox.style.display = "none";
 
     documentSection.style.display = "block";
 
@@ -1087,19 +1095,23 @@ window.showDocuments = async function () {
 
         documentList.innerHTML = "";
 
+        const isAdmin =
+            document.querySelector(".user-name")
+                .textContent
+                .includes("Admin");
+
         snapshot.forEach((documentDoc) => {
 
             const data =
                 documentDoc.data();
 
             const title =
-                data.title ||
-                "दस्तावेज़";
+                data.title || "दस्तावेज़";
 
-          const fileUrl =
-    data.fileUrl;
+            const fileUrl =
+                data.fileUrl;
 
-if (!fileUrl) return;
+            if (!fileUrl) return;
 
             const item =
                 document.createElement("div");
@@ -1107,46 +1119,104 @@ if (!fileUrl) return;
             item.className =
                 "notice-item";
 
-           if (data.fileType === "application/pdf") {
+            let content = `
+                <h3>📄 ${escapeHTML(title)}</h3>
+            `;
 
-    item.innerHTML = `
-        <h3>📄 ${escapeHTML(title)}</h3>
+            /* IMAGE */
 
-        <a
-            href="${escapeHTML(fileUrl)}"
-            target="_blank"
-            style="
-                display:inline-block;
-                margin-top:15px;
-                padding:10px 16px;
-                background:#e50914;
-                color:white;
-                text-decoration:none;
-                border-radius:5px;
-            ">
-            📄 PDF खोलें
-        </a>
-    `;
+            if (
+                data.fileType &&
+                data.fileType.startsWith("image/")
+            ) {
 
-} else {
+                content += `
+                    <img
+                        src="${escapeHTML(fileUrl)}"
+                        alt="${escapeHTML(title)}"
+                        style="
+                            width:100%;
+                            max-width:700px;
+                            border-radius:8px;
+                            margin-top:10px;
+                            display:block;
+                        "
+                    >
+                `;
 
-    item.innerHTML = `
-        <h3>📄 ${escapeHTML(title)}</h3>
+            }
 
-        <img
-            src="${escapeHTML(fileUrl)}"
-            alt="${escapeHTML(title)}"
-            style="
-                width:100%;
-                max-width:700px;
-                border-radius:8px;
-                margin-top:10px;
-                display:block;
-            "
-        >
-    `;
+            /* PDF */
 
-}
+            else if (
+                data.fileType === "application/pdf"
+            ) {
+
+                content += `
+                    <a
+                        href="${escapeHTML(fileUrl)}"
+                        target="_blank"
+                        style="
+                            display:inline-block;
+                            margin-top:15px;
+                            padding:10px 16px;
+                            background:#e50914;
+                            color:white;
+                            text-decoration:none;
+                            border-radius:5px;
+                        ">
+                        📄 PDF खोलें
+                    </a>
+                `;
+
+            }
+
+            /* OTHER FILE */
+
+            else {
+
+                content += `
+                    <a
+                        href="${escapeHTML(fileUrl)}"
+                        target="_blank"
+                        style="
+                            display:inline-block;
+                            margin-top:15px;
+                            padding:10px 16px;
+                            background:#e50914;
+                            color:white;
+                            text-decoration:none;
+                            border-radius:5px;
+                        ">
+                        📂 दस्तावेज़ खोलें
+                    </a>
+                `;
+
+            }
+
+            /* ADMIN DELETE BUTTON */
+
+            if (isAdmin) {
+
+                content += `
+                    <br>
+
+                    <button
+                        type="button"
+                        class="admin-btn"
+                        style="
+                            margin-top:15px;
+                            background:#8b0000;
+                        "
+                        onclick="deleteDocument('${documentDoc.id}')">
+
+                        🗑️ दस्तावेज़ हटाएँ
+
+                    </button>
+                `;
+            }
+
+            item.innerHTML = content;
 
             documentList.appendChild(item);
 
@@ -1162,8 +1232,48 @@ if (!fileUrl) return;
         documentList.innerHTML =
             `<p style="color:#e50914;">
                 ❌ दस्तावेज़ लोड नहीं हो सके।<br>
-                ${error.message}
+                ${escapeHTML(error.message)}
             </p>`;
+    }
+
+};
+        /* DELETE DOCUMENT */
+
+window.deleteDocument = async function (documentId) {
+
+    const confirmDelete =
+        confirm(
+            "क्या आप इस दस्तावेज़ को हटाना चाहते हैं?"
+        );
+
+    if (!confirmDelete) {
+        return;
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(db, "documents", documentId)
+        );
+
+        alert(
+            "✅ दस्तावेज़ सफलतापूर्वक हटा दिया गया!"
+        );
+
+        await showDocuments();
+
+    } catch (error) {
+
+        console.error(
+            "Delete document error:",
+            error
+        );
+
+        alert(
+            "❌ दस्तावेज़ हटाया नहीं जा सका!\n\n" +
+            error.message
+        );
+
     }
 
 };
@@ -1953,7 +2063,38 @@ window.hideAddDocument = function () {
     addDocumentBox.style.display = "none";
 
 };
+/* DOCUMENT FILE SELECTION */
 
+const documentInput =
+    document.getElementById("documentInput");
+
+const documentChooseButton =
+    document.getElementById("documentChooseButton");
+
+const documentFileName =
+    document.getElementById("documentFileName");
+
+documentChooseButton.addEventListener("click", () => {
+    documentInput.click();
+});
+
+documentInput.addEventListener("change", () => {
+
+    if (documentInput.files.length > 0) {
+
+        const file = documentInput.files[0];
+
+        documentFileName.textContent =
+            "चयनित: " + file.name;
+
+    } else {
+
+        documentFileName.textContent =
+            "कोई दस्तावेज़ चयनित नहीं";
+
+    }
+
+});
 
 /* PUBLISH DOCUMENT */
 
