@@ -205,49 +205,84 @@
     </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import {
-        getAuth,
-        signInWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDJpoidkKYkz0sNYWUmfNxUUdMkGlwEuDg",
-        authDomain: "lkk-party.firebaseapp.com",
-        projectId: "lkk-party",
-        storageBucket: "lkk-party.firebasestorage.app",
-        messagingSenderId: "379113199782",
-        appId: "1:379113199782:web:4e01e88865687d9f20fc67",
-        measurementId: "G-1NJXH7LXRX"
-    };
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+import {
+  getAuth,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    document.getElementById("loginForm").addEventListener("submit", async function(event) {
-        event.preventDefault();
+import {
+  getFirestore,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-        const loginId = document.getElementById("loginId").value.trim();
-        const password = document.getElementById("password").value;
-        const message = document.getElementById("message");
 
-        message.textContent = "Login हो रहा है...";
+const firebaseConfig = {
+  apiKey: "AIzaSyDJpoidkKYkz0sNYWUmfNxUUdMkGlwEuDg",
+  authDomain: "lkk-party.firebaseapp.com",
+  projectId: "lkk-party",
+  storageBucket: "lkk-party.firebasestorage.app",
+  messagingSenderId: "379113199782",
+  appId: "1:379113199782:web:4e01e88865687d9f20fc67",
+  measurementId: "G-1NJXH7LXRX"
+};
 
-        try {
-            await signInWithEmailAndPassword(auth, loginId, password);
 
-            message.textContent = "Login सफल हुआ!";
+const app = initializeApp(firebaseConfig);
 
-            // फिलहाल वापस मुख्य पृष्ठ पर
-            setTimeout(() => {
-               window.location.href = "dashboard.html";
-            }, 800);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        } catch (error) {
-            message.textContent = "Login ID या Password गलत है।";
-            console.error(error);
-        }
-    });
+
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  const loginId = document.getElementById("loginId").value.trim().toUpperCase();
+  const password = document.getElementById("password").value;
+
+  const message = document.getElementById("message");
+
+  message.textContent = "Login हो रहा है...";
+
+  try {
+
+    // Members collection से Login ID ढूँढना
+    const memberRef = doc(db, "members", loginId);
+    const memberSnap = await getDoc(memberRef);
+
+    if (!memberSnap.exists()) {
+      message.textContent = "Login ID गलत है।";
+      return;
+    }
+
+    const memberData = memberSnap.data();
+
+    // Firebase Authentication वाला email
+    const email = memberData.email;
+
+    // Firebase Login
+    await signInWithEmailAndPassword(auth, email, password);
+
+    message.textContent = "Login सफल हुआ!";
+
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 800);
+
+  } catch (error) {
+
+    console.error(error);
+
+    message.textContent = "Login ID या Password गलत है।";
+
+  }
+
+});
+
 </script>
 
 </body>
